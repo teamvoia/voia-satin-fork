@@ -658,9 +658,9 @@ int _triangulate(tsVertex *vertices, int count, int added, TriangleData *data) {
                 const uint32_t i3 = v3->index;
 
                 // add triangle
-                data->indices[triangleIndex] = (TriangleIndices) { .i0 = uint32_t(i1),
-                                                                   .i1 = uint32_t(i2),
-                                                                   .i2 = uint32_t(i3) };
+                data->indices[triangleIndex] = (TriangleIndices) { .i0 = (uint32_t)i1,
+                                                                   .i1 = (uint32_t)i2,
+                                                                   .i2 = (uint32_t)i3 };
 
                 triangleIndex++;
 
@@ -718,9 +718,9 @@ int _triangulate(tsVertex *vertices, int count, int added, TriangleData *data) {
     printf("Adding last triangle: %d, %d, %d\n", v1->index, v2->index, v3->index);
 #endif
 
-    data->indices[triangleIndex] = (TriangleIndices) { .i0 = uint32_t(v1->index),
-                                                       .i1 = uint32_t(v2->index),
-                                                       .i2 = uint32_t(v3->index) };
+    data->indices[triangleIndex] = (TriangleIndices) { .i0 = (uint32_t)v1->index,
+                                                       .i1 = (uint32_t)v2->index,
+                                                       .i2 = (uint32_t)v3->index };
 
     return 0;
 }

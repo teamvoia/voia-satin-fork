@@ -1414,13 +1414,13 @@ GeometryData generateIcoSphereGeometryData(float radius, int res) {
             uint32_t c = (uint32_t)j;
             j++;
 
-            newInd[k] = (TriangleIndices) { uint32_t(i0), a, c };
+            newInd[k] = (TriangleIndices) { (uint32_t)i0, a, c };
             k++;
-            newInd[k] = (TriangleIndices) { a, uint32_t(i1), b };
+            newInd[k] = (TriangleIndices) { a, (uint32_t)i1, b };
             k++;
             newInd[k] = (TriangleIndices) { a, b, c };
             k++;
-            newInd[k] = (TriangleIndices) { c, b, uint32_t(i2) };
+            newInd[k] = (TriangleIndices) { c, b, (uint32_t)i2 };
             k++;
         }
 
@@ -1504,17 +1504,17 @@ GeometryData generateOctaSphereGeometryData(float radius, int res) {
         const int j2 = j0 + col_height + 1;
         const int j3 = j0 + col_height + 2;
         for (int row = 0; row < col_height - 1; row++) {
-            ind[triangleIndex++] = (TriangleIndices) { .i0 = uint32_t(j0 + row),
-                                                       .i1 = uint32_t(j1 + row),
-                                                       .i2 = uint32_t(j2 + row) };
-            ind[triangleIndex++] = (TriangleIndices) { .i0 = uint32_t(j2) + row,
-                                                       .i1 = uint32_t(j1 + row),
-                                                       .i2 = uint32_t(j3 + row) };
+            ind[triangleIndex++] = (TriangleIndices) { .i0 = (uint32_t)(j0 + row),
+                                                       .i1 = (uint32_t)(j1 + row),
+                                                       .i2 = (uint32_t)(j2 + row) };
+            ind[triangleIndex++] = (TriangleIndices) { .i0 = (uint32_t)(j2 + row),
+                                                       .i1 = (uint32_t)(j1 + row),
+                                                       .i2 = (uint32_t)(j3 + row) };
         }
         const int row = col_height - 1;
-        ind[triangleIndex++] = (TriangleIndices) { .i0 = uint32_t(j0 + row),
-                                                   .i1 = uint32_t(j1 + row),
-                                                   .i2 = uint32_t(j2 + row) };
+        ind[triangleIndex++] = (TriangleIndices) { .i0 = (uint32_t)(j0 + row),
+                                                   .i1 = (uint32_t)(j1 + row),
+                                                   .i2 = (uint32_t)(j2 + row) };
         j0 = j2;
     }
 
