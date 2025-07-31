@@ -1271,13 +1271,13 @@ GeometryData generateIcoSphereGeometryData(float radius, int res) {
             uint32_t c = (uint32_t)j;
             j++;
 
-            newInd[k] = (TriangleIndices) { i0, a, c };
+            newInd[k] = (TriangleIndices) { (uint32_t)i0, a, c };
             k++;
-            newInd[k] = (TriangleIndices) { a, i1, b };
+            newInd[k] = (TriangleIndices) { a, (uint32_t)i1, b };
             k++;
             newInd[k] = (TriangleIndices) { a, b, c };
             k++;
-            newInd[k] = (TriangleIndices) { c, b, i2 };
+            newInd[k] = (TriangleIndices) { c, b, (uint32_t)i2 };
             k++;
         }
 
@@ -1366,12 +1366,12 @@ GeometryData generateOctaSphereGeometryData(float radius, int res) {
         const int j3 = j0 + col_height + 2;
         for (int row = 0; row < col_height - 1; row++) {
             ind[triangleIndex++] =
-                (TriangleIndices) { .i0 = j0 + row, .i1 = j1 + row, .i2 = j2 + row };
+                (TriangleIndices) { .i0 = (uint32_t)j0 + row, .i1 = (uint32_t)j1 + row, .i2 = (uint32_t)j2 + row };
             ind[triangleIndex++] =
-                (TriangleIndices) { .i0 = j2 + row, .i1 = j1 + row, .i2 = j3 + row };
+                (TriangleIndices) { .i0 = (uint32_t)j2 + row, .i1 = (uint32_t)j1 + row, .i2 = (uint32_t)j3 + row };
         }
         const int row = col_height - 1;
-        ind[triangleIndex++] = (TriangleIndices) { .i0 = j0 + row, .i1 = j1 + row, .i2 = j2 + row };
+        ind[triangleIndex++] = (TriangleIndices) { .i0 = (uint32_t)j0 + row, .i1 = (uint32_t)j1 + row, .i2 = (uint32_t)j2 + row };
         j0 = j2;
     }
 
@@ -1766,9 +1766,9 @@ GeometryData generateExtrudedRoundedRectGeometryData(float width, float height, 
                 int i2 = nextLoop + curr;
                 int i3 = nextLoop + next;
 
-                ind[triIndex] = (TriangleIndices) { i0, i2, i3 };
+                ind[triIndex] = (TriangleIndices) { (uint32_t)i0, (uint32_t)i2, (uint32_t)i3 };
                 triIndex++;
-                ind[triIndex] = (TriangleIndices) { i0, i3, i1 };
+                ind[triIndex] = (TriangleIndices) { (uint32_t)i0, (uint32_t)i3, (uint32_t)i1 };
                 triIndex++;
             }
         }
@@ -1861,96 +1861,96 @@ void connectPatchEdges(GeometryData *dst, int n, int firstPatchIndex, int second
     int firstOffset = firstPatchIndex * verticesPerPatch;
     int secondOffset = secondPatchIndex * verticesPerPatch;
     if (firstPatchEdge == PatchEdgeLeft && secondPatchEdge == PatchEdgeRight) {
-        int i0 = firstOffset;
-        int i3 = secondOffset + nMinusOne;
-        for (int row = 0; row < nMinusOne; row++) {
-            const int perRow = n - row;
-            const int i1 = i0 + perRow;
-            const int i2 = i3 + perRow - 1;
+        uint32_t i0 = (uint32_t)firstOffset;
+        uint32_t i3 = (uint32_t)secondOffset + nMinusOne;
+        for (uint32_t row = 0; row < nMinusOne; row++) {
+            const uint32_t perRow = n - row;
+            const uint32_t i1 = i0 + perRow;
+            const uint32_t i2 = i3 + perRow - 1;
             tubeTris[tubeIndex++] = (TriangleIndices) { .i0 = i0, .i1 = i1, .i2 = i3 };
             tubeTris[tubeIndex++] = (TriangleIndices) { .i0 = i1, .i1 = i2, .i2 = i3 };
             i0 = i1;
             i3 = i2;
         }
     } else if (firstPatchEdge == PatchEdgeRight && secondPatchEdge == PatchEdgeLeft) {
-        int i0 = firstOffset + nMinusOne;
-        int i3 = secondOffset;
+        uint32_t i0 = (uint32_t)firstOffset + nMinusOne;
+        uint32_t i3 = secondOffset;
         for (int row = 0; row < nMinusOne; row++) {
-            const int perRow = n - row;
-            const int i1 = i0 + perRow - 1;
-            const int i2 = i3 + perRow;
+            const uint32_t perRow = n - row;
+            const uint32_t i1 = i0 + perRow - 1;
+            const uint32_t i2 = i3 + perRow;
             tubeTris[tubeIndex++] = (TriangleIndices) { .i0 = i0, .i1 = i2, .i2 = i1 };
             tubeTris[tubeIndex++] = (TriangleIndices) { .i0 = i0, .i1 = i3, .i2 = i2 };
             i0 = i1;
             i3 = i2;
         }
     } else if (firstPatchEdge == PatchEdgeRight && secondPatchEdge == PatchEdgeRight) {
-        int i0 = firstOffset + nMinusOne;
-        int i3 = secondOffset + verticesPerPatch - 1;
+        uint32_t i0 = firstOffset + nMinusOne;
+        uint32_t i3 = secondOffset + verticesPerPatch - 1;
         for (int row = 0; row < nMinusOne; row++) {
-            const int perRow = n - row;
-            const int perRowInverse = n - perRow;
-            const int i1 = i0 + perRow - 1;
-            const int i2 = i3 - perRowInverse - 1;
+            const uint32_t perRow = n - row;
+            const uint32_t perRowInverse = n - perRow;
+            const uint32_t i1 = i0 + perRow - 1;
+            const uint32_t i2 = i3 - perRowInverse - 1;
             tubeTris[tubeIndex++] = (TriangleIndices) { .i0 = i0, .i1 = i2, .i2 = i1 };
             tubeTris[tubeIndex++] = (TriangleIndices) { .i0 = i0, .i1 = i3, .i2 = i2 };
             i0 = i1;
             i3 = i2;
         }
     } else if (firstPatchEdge == PatchEdgeBottom && secondPatchEdge == PatchEdgeBottom) {
-        int i0 = firstOffset;
-        int i3 = secondOffset + nMinusOne;
+        uint32_t i0 = firstOffset;
+        uint32_t i3 = secondOffset + nMinusOne;
         for (int row = 0; row < nMinusOne; row++) {
-            const int i1 = i0 + 1;
-            const int i2 = i3 - 1;
+            const uint32_t i1 = i0 + 1;
+            const uint32_t i2 = i3 - 1;
             tubeTris[tubeIndex++] = (TriangleIndices) { .i0 = i0, .i1 = i2, .i2 = i1 };
             tubeTris[tubeIndex++] = (TriangleIndices) { .i0 = i0, .i1 = i3, .i2 = i2 };
             i0 = i1;
             i3 = i2;
         }
     } else if (firstPatchEdge == PatchEdgeBottom && secondPatchEdge == PatchEdgeRight) {
-        int i0 = firstOffset;
-        int i3 = secondOffset + nMinusOne;
-        for (int row = 0; row < nMinusOne; row++) {
-            const int perRow = n - row;
-            const int i1 = i0 + 1;
-            const int i2 = i3 + perRow - 1;
+        uint32_t i0 = firstOffset;
+        uint32_t i3 = secondOffset + nMinusOne;
+        for (uint32_t row = 0; row < nMinusOne; row++) {
+            const uint32_t perRow = n - row;
+            const uint32_t i1 = i0 + 1;
+            const uint32_t i2 = i3 + perRow - 1;
             tubeTris[tubeIndex++] = (TriangleIndices) { .i0 = i0, .i1 = i2, .i2 = i1 };
             tubeTris[tubeIndex++] = (TriangleIndices) { .i0 = i0, .i1 = i3, .i2 = i2 };
             i0 = i1;
             i3 = i2;
         }
     } else if (firstPatchEdge == PatchEdgeRight && secondPatchEdge == PatchEdgeBottom) {
-        int i0 = firstOffset + nMinusOne;
-        int i3 = secondOffset + nMinusOne;
-        for (int row = 0; row < nMinusOne; row++) {
-            const int perRow = n - row;
-            const int i1 = i0 + perRow - 1;
-            const int i2 = i3 - 1;
+        uint32_t i0 = firstOffset + nMinusOne;
+        uint32_t i3 = secondOffset + nMinusOne;
+        for (uint32_t row = 0; row < nMinusOne; row++) {
+            const uint32_t perRow = n - row;
+            const uint32_t i1 = i0 + perRow - 1;
+            const uint32_t i2 = i3 - 1;
             tubeTris[tubeIndex++] = (TriangleIndices) { .i0 = i0, .i1 = i2, .i2 = i1 };
             tubeTris[tubeIndex++] = (TriangleIndices) { .i0 = i0, .i1 = i3, .i2 = i2 };
             i0 = i1;
             i3 = i2;
         }
     } else if (firstPatchEdge == PatchEdgeBottom && secondPatchEdge == PatchEdgeLeft) {
-        int i0 = firstOffset;
-        int i3 = secondOffset;
-        for (int row = 0; row < nMinusOne; row++) {
-            const int perRow = n - row;
-            const int i1 = i0 + 1;
-            const int i2 = i3 + perRow;
+        uint32_t i0 = firstOffset;
+        uint32_t i3 = secondOffset;
+        for (uint32_t row = 0; row < nMinusOne; row++) {
+            const uint32_t perRow = n - row;
+            const uint32_t i1 = i0 + 1;
+            const uint32_t i2 = i3 + perRow;
             tubeTris[tubeIndex++] = (TriangleIndices) { .i0 = i0, .i1 = i2, .i2 = i1 };
             tubeTris[tubeIndex++] = (TriangleIndices) { .i0 = i0, .i1 = i3, .i2 = i2 };
             i0 = i1;
             i3 = i2;
         }
     } else if (firstPatchEdge == PatchEdgeLeft && secondPatchEdge == PatchEdgeBottom) {
-        int i0 = firstOffset;
-        int i3 = secondOffset;
-        for (int row = 0; row < nMinusOne; row++) {
-            const int perRow = n - row;
-            const int i1 = i0 + perRow;
-            const int i2 = i3 + 1;
+        uint32_t i0 = firstOffset;
+        uint32_t i3 = secondOffset;
+        for (uint32_t row = 0; row < nMinusOne; row++) {
+            const uint32_t perRow = n - row;
+            const uint32_t i1 = i0 + perRow;
+            const uint32_t i2 = i3 + 1;
             tubeTris[tubeIndex++] = (TriangleIndices) { .i0 = i0, .i1 = i1, .i2 = i2 };
             tubeTris[tubeIndex++] = (TriangleIndices) { .i0 = i0, .i1 = i2, .i2 = i3 };
             i0 = i1;
@@ -1981,13 +1981,13 @@ void connectPatchCorners(GeometryData *dst, int n, int firstPatchIndex, int seco
                          int thirdPatchIndex, int fourthPatchIndex,
                          enum PatchCorner firstPatchCorner, enum PatchCorner secondPatchCorner,
                          enum PatchCorner thirdPatchCorner, enum PatchCorner fourthPatchCorner) {
-    const int verticesPerPatch = n * (n + 1) / 2;
-    const int triangles = 2;
+    const uint32_t verticesPerPatch = n * (n + 1) / 2;
+    const uint32_t triangles = 2;
 
-    const int i0 = firstPatchIndex * verticesPerPatch + getPatchCornerOffset(n, firstPatchCorner);
-    const int i1 = secondPatchIndex * verticesPerPatch + getPatchCornerOffset(n, secondPatchCorner);
-    const int i2 = thirdPatchIndex * verticesPerPatch + getPatchCornerOffset(n, thirdPatchCorner);
-    const int i3 = fourthPatchIndex * verticesPerPatch + getPatchCornerOffset(n, fourthPatchCorner);
+    const uint32_t i0 = firstPatchIndex * verticesPerPatch + getPatchCornerOffset(n, firstPatchCorner);
+    const uint32_t i1 = secondPatchIndex * verticesPerPatch + getPatchCornerOffset(n, secondPatchCorner);
+    const uint32_t i2 = thirdPatchIndex * verticesPerPatch + getPatchCornerOffset(n, thirdPatchCorner);
+    const uint32_t i3 = fourthPatchIndex * verticesPerPatch + getPatchCornerOffset(n, fourthPatchCorner);
 
     TriangleIndices *tris = (TriangleIndices *)malloc(triangles * sizeof(TriangleIndices));
     tris[0] = (TriangleIndices) { .i0 = i0, .i1 = i1, .i2 = i2 };
@@ -2080,17 +2080,17 @@ GeometryData generateRoundedBoxGeometryData(float width, float height, float dep
     int j0 = 0;
     int triangleIndex = 0;
     for (int col_index = 0; col_index < nMinusOne; col_index++) {
-        const int col_height = n - 1 - col_index;
-        const int j1 = j0 + 1;
-        const int j2 = j0 + col_height + 1;
-        const int j3 = j0 + col_height + 2;
-        for (int row = 0; row < col_height - 1; row++) {
+        const uint32_t col_height = n - 1 - col_index;
+        const uint32_t j1 = j0 + 1;
+        const uint32_t j2 = j0 + col_height + 1;
+        const uint32_t j3 = j0 + col_height + 2;
+        for (uint32_t row = 0; row < col_height - 1; row++) {
             ind[triangleIndex++] =
                 (TriangleIndices) { .i0 = j0 + row, .i1 = j1 + row, .i2 = j2 + row };
             ind[triangleIndex++] =
                 (TriangleIndices) { .i0 = j2 + row, .i1 = j1 + row, .i2 = j3 + row };
         }
-        const int row = col_height - 1;
+        const uint32_t row = col_height - 1;
         ind[triangleIndex++] = (TriangleIndices) { .i0 = j0 + row, .i1 = j1 + row, .i2 = j2 + row };
         j0 = j2;
     }
