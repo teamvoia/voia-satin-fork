@@ -601,7 +601,7 @@ int _triangulate(tsVertex *vertices, int count, int added, TriangulationData *da
 #endif
                 // add triangle
                 data->indexData[triangleIndex] =
-                    (TriangleIndices) { .i0 = v1->index, .i1 = v2->index, .i2 = v3->index };
+                    (TriangleIndices) { .i0 = (uint32_t)v1->index, .i1 = (uint32_t)v2->index, .i2 = (uint32_t)v3->index };
                 triangleIndex++;
 
                 v1->next = v3;
@@ -645,7 +645,7 @@ int _triangulate(tsVertex *vertices, int count, int added, TriangulationData *da
     printf("Adding last triangle: %d, %d, %d\n", v1->index, v2->index, v3->index);
 #endif
     data->indexData[triangleIndex] =
-        (TriangleIndices) { .i0 = v1->index, .i1 = v2->index, .i2 = v3->index };
+        (TriangleIndices) { .i0 = (uint32_t)v1->index, .i1 = (uint32_t)v2->index, .i2 = (uint32_t)v3->index };
     return 0;
 }
 
@@ -732,7 +732,7 @@ tsVertex *createVertexStructure(Vertex *vertices, const uint32_t *face, int leng
         int next = (i + 1) % length;
         int prev = (i - 1) < 0 ? (length - 1) : (i - 1);
 
-        structure[i] = (tsVertex) { .index = index,
+        structure[i] = (tsVertex) { .index = (int)index,
                                     .v = simd_make_float2(p),
                                     .ear = false,
                                     .imaginary = false,
